@@ -13,12 +13,6 @@ This project shows the steps involved to implement Disaster recovery for EKS sta
 # Architecture 
 ![Architecture](/images/velero_architecture.png)
 # Solution
-## Optional: Cloning the github repo
-
-```bash
-git clone https://github.com/aws-samples/cross-region-dr-eks
-cd cross-region-dr-eks
-```
 
 ## Optional: Setting up the source cluster
 
