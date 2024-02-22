@@ -1,7 +1,7 @@
 # Cross-region DR for EKS stateful workloads using Velero / Kopia
 This project shows the steps involved to implement Disaster recovery for EKS stateful workloads using Velero's built-in data movement feature
 
-# Pre-req
+# Pre-req - optional
 * [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * EKS clusters on 2 different region. One will be primary and the other one will the DR cluster
 * [ebs csi controller](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html)
@@ -10,17 +10,17 @@ This project shows the steps involved to implement Disaster recovery for EKS sta
 * S3 buckets in source and DR region
 * [Velero cli](https://velero.io/docs/v1.3.0/basic-install/#install-the-cli)
 
-# Architecture
+# Architecture 
 ![Architecture](/images/velero_architecture.png)
 # Solution
-## Step 1: Cloning the github repo
+## Optional: Cloning the github repo
 
 ```bash
 git clone https://github.com/aws-samples/cross-region-dr-eks
 cd cross-region-dr-eks
 ```
 
-## Step 2: Setting up the source cluster
+## Optional: Setting up the source cluster
 
 ### IAM policy & Pod identities setup
 The first step on the source cluster is to deploy the velero controller. Before doing that, we need to ensure the service account used by velero has necessary permission to access the S3 buckets
@@ -57,7 +57,7 @@ The above command also deploys a velero node agent daemonset. Velero Node Agent 
 Your output should look like below :
 ![Velero Output](/images/veleroout.png)
 
-## Step 3: Deploy a statefulset and create a backup
+##  Deploy a statefulset and create a backup
 
 We will now deploy a sample nginx application that is backed by the persistent volume. 
 
@@ -81,7 +81,7 @@ Your output should look like below:
 
 You can enable [cross region replication on the source S3](https://aws.amazon.com/blogs/aws/new-replicate-existing-objects-with-amazon-s3-batch-replication/) bucket to the desired bucket in the DR region which will be used while setting up the velero controller in the DR region
 
-## Step 4: Setting the DR cluster
+## Setting the DR cluster
 You can follow the IAM role creation process in step 2 to create the service account for the DR EKS cluster. Make sure the bucket name is updated correctly in the `iam.json` to point to the right bucket in the DR region
 
 ### Deploy the velero controller
@@ -95,7 +95,7 @@ helm install velero vmware-tanzu/velero --version 5.2.2         --namespace vele
 
 ```
 
-## Step 5: Create the restore job
+## Create the restore job
 
 We will again leverage velero's built-in datadownloader to download the persistent volume from the S3 bucket and restore it on the destination EKS cluster
 
@@ -109,7 +109,3 @@ nht-admin:~/environment $ velero get restore
 NAME        BACKUP     STATUS            STARTED                         COMPLETED                       ERRORS   WARNINGS   CREATED                         SELECTOR
 jhrestore   jhbackup   Completed   2024-01-26 03:08:13 +0000 UTC   2024-01-26 03:18:36 +0000 UTC   0        13         2024-01-26 03:08:13 +0000 UTC   <none>
 ```
-
-# Clean up
-* Delete both the clusters
-* Delete the S3 buckets
