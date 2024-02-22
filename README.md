@@ -1,7 +1,7 @@
-# Achieving Cross-region DR for EKS stateful workloads using Velero
+# Cross-region DR for EKS stateful workloads using Velero / Kopia
 This project shows the steps involved to implement Disaster recovery for EKS stateful workloads using Velero's built-in data movement feature
 
-# Pre-requisites
+# Pre-req
 * [aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 * EKS clusters on 2 different region. One will be primary and the other one will the DR cluster
 * [ebs csi controller](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html)
